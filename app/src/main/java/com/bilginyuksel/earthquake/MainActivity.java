@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.bilginyuksel.earthquake.remote.RemoteSoundControl;
+import com.bilginyuksel.earthquake.remote.RemoteCommand;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,21 +24,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-                RemoteSoundControl remoteSoundControl = new RemoteSoundControl(getApplicationContext());
-                remoteSoundControl.start();
+                RemoteCommand remoteSoundControl = RemoteCommand.findRequestedCommand("sound");
+                remoteSoundControl.execute();
             }
         });
-        /*
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(100, 100);
-        mediaPlayer.start();
-        try {
-            Thread.sleep(3000);
-            mediaPlayer.stop();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
 
     }
 }
