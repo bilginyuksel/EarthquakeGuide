@@ -11,22 +11,24 @@ public class SOSAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         MediaPlayer mediaPlayer = prepareMediaPlayerForSOSCall(context);
-        HelpCallThread helpCallThread = new HelpCallThread(mediaPlayer, intent.getExtras().getInt("timeout", 3000));
-        helpCallThread.run();
+        MediaControlThread mediaControlThread =
+                new MediaControlThread(mediaPlayer, intent.getExtras().getInt("timeout", 3000));
+        mediaControlThread.run();
     }
 
-    private MediaPlayer prepareMediaPlayerForSOSCall(Context context){
+    private MediaPlayer prepareMediaPlayerForSOSCall(Context context) {
         MediaPlayer mediaPlayer = MediaPlayer.create(context, Settings.System.DEFAULT_RINGTONE_URI);
         mediaPlayer.setLooping(true);
         mediaPlayer.setVolume(1.0f, 1.0f);
         return mediaPlayer;
     }
 
-    public static class HelpCallThread implements Runnable {
+    public static class MediaControlThread implements Runnable {
 
-        private int timeout;
-        private MediaPlayer mediaPlayer;
-        HelpCallThread(MediaPlayer mediaPlayer, int timeout){
+        private final int timeout;
+        private final MediaPlayer mediaPlayer;
+
+        MediaControlThread(MediaPlayer mediaPlayer, int timeout) {
             this.timeout = timeout;
             this.mediaPlayer = mediaPlayer;
         }

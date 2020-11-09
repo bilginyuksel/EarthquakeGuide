@@ -8,16 +8,25 @@ import com.bilginyuksel.earthquake.remote.RemoteCommand;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 public class FirebaseMessagingReceiver extends FirebaseMessagingService {
     private static final String TAG = FirebaseMessagingReceiver.class.getSimpleName();
+
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        Log.i(TAG, "onMessageReceived: Message data= "+ remoteMessage.getData().toString());
 
-        Log.d(TAG, "onMessageReceived: " + remoteMessage.getFrom());
-        String commandType = null;
-        RemoteCommand requestedCommand = RemoteCommand.findRequestedCommand(commandType);
-        requestedCommand.execute();
+        Map<String, String> remoteMessageData = remoteMessage.getData();
+        if (remoteMessageData.containsKey("command")) {
+            String command = remoteMessageData.get("command");
+            RemoteCommand.findRequestedCommand(getApplicationContext(), command)
+                    .execute();
+            return;
+        }
+
+        sendDetailedNotification(remoteMessage);
     }
 
     @Override
@@ -25,4 +34,10 @@ public class FirebaseMessagingReceiver extends FirebaseMessagingService {
         super.onNewToken(s);
         Log.d(TAG, "onNewToken: " + s);
     }
+
+
+    public void sendDetailedNotification(RemoteMessage remoteMessage) {
+        Log.i(TAG, "sendDetailedNotification: " );
+    }
+
 }

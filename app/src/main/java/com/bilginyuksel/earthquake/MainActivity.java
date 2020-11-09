@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-                RemoteCommand remoteSoundControl = RemoteCommand.findRequestedCommand("sound");
+                RemoteCommand remoteSoundControl = RemoteCommand.findRequestedCommand(getApplicationContext(), "make_sound");
                 remoteSoundControl.execute();
             }
         });
