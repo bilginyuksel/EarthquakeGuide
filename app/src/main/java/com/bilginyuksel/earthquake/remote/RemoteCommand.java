@@ -8,9 +8,14 @@ public abstract class RemoteCommand {
     public static final String COMPUTE_DISTANCE = "compute_distance";
 
     public static RemoteCommand findRequestedCommand(final Context context, String command) {
-        if (command.equals(GET_LOCATION)) return new GetLocationRemoteCommand();
-        else if (command.equals(MAKE_SOUND)) return new MakeSoundRemoteCommand(context);
-        else if (command.equals(COMPUTE_DISTANCE)) return new ComputeDistanceRemoteCommand();
+        switch (command) {
+            case GET_LOCATION:
+                return new GetLocationRemoteCommand(context);
+            case MAKE_SOUND:
+                return new MakeSoundRemoteCommand(context);
+            case COMPUTE_DISTANCE:
+                return new ComputeDistanceRemoteCommand();
+        }
         return new DefaultRemoteCommand();
     }
 
